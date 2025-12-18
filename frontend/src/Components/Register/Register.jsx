@@ -30,8 +30,9 @@ const Register = () => {
 
     const [isFormValid, setIsFormValid] = useState(false)
 
-    const emailRegex = /^[\s]+@[\s]+\.[\s]+$/;
-    const phoneRegex = /[\s]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+
 
 
 
