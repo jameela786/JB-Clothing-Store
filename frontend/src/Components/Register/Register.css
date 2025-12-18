@@ -1,0 +1,102 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.register_container{
+    min-height: 100vh;
+    padding: 40px;
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.register_card{
+    width: 420px;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid azure;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 1.0);
+}
+
+.register_title{
+    font-weight: 600;
+    font-size: 25px;
+    color: black;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.register_form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form_group{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+
+}
+
+.form_label{
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(54, 25, 25);
+}
+
+.form_input{
+    padding: 14px 12px;
+    border-radius: 5px;
+    width: 100%;
+
+}
+
+.form-textarea{
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.form_input::placeholder {
+    color: #a0aec0;
+  }
+
+.form_input.input_error{
+    border-color: #f56565;
+    /* background-color: #fff5f5; */
+}
+
+.error_message{
+    color: #f56565;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.register_btn{
+    width: 140px;
+    padding: 12px 15px;
+    text-align: center;
+    border: none;
+    border-radius: 12px;
+    background-color: blueviolet;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 10px;
+}
+.register_btn:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    box-shadow: none;
+    /* opacity: 0.6; */
+  }
