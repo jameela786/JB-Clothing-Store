@@ -1,0 +1,47 @@
+.hero-banner {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 80px 24px;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 32px;
+  }
+  
+  .hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .hero-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .hero-subtitle {
+    font-size: 20px;
+    margin-bottom: 32px;
+    opacity: 0.95;
+    animation: fadeInUp 0.8s ease-out;
+  }
+  
+  .hero-cta {
+    padding: 14px 48px;
+    background: #ffffff;
+    color: #667eea;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: fadeInUp 1s ease-out;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .hero-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  }
+  

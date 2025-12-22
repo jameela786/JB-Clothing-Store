@@ -99,4 +99,34 @@
     cursor: not-allowed;
     box-shadow: none;
     /* opacity: 0.6; */
+}
+
+.register_footer {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+  }
+  
+  .footer_text {
+    text-align: center;
+    font-size: 14px;
+    color: #718096;
+  }
+  
+  .login_link {
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .login_link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+  }
+  
+  .login_link:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+    border-radius: 2px;
   }

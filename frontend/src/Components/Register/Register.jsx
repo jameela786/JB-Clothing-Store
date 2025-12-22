@@ -96,9 +96,9 @@ const Register = () => {
     };
 
     useEffect(() => {
-        const allFieldsFilled = Object.values(formData).every(value=>value.trim() !== '');
-        const noErrors = Object.values(errors).every(each=>each.trim() === '');
-        const allFieldsValid = Object.keys(formData).every(key=>validateFields(key,formData[key])==='');
+        const allFieldsFilled = Object.values(formData).every(value => value.trim() !== '');
+        const noErrors = Object.values(errors).every(each => each.trim() === '');
+        const allFieldsValid = Object.keys(formData).every(key => validateFields(key, formData[key]) === '');
         setIsFormValid(allFieldsFilled && noErrors && allFieldsValid);
     }, [formData, errors]);
 
@@ -116,9 +116,9 @@ const Register = () => {
             }));
         };
 
-        if(name=='password' && touched.confirmpassword){
-            setErrors(prev=>({
-                ...prev,confirmpassword: formData.confirmpassword !== value && formData.confirmpassword ?  'password does not match' : ''
+        if (name == 'password' && touched.confirmpassword) {
+            setErrors(prev => ({
+                ...prev, confirmpassword: formData.confirmpassword !== value && formData.confirmpassword ? 'password does not match' : ''
             }))
         }
 
@@ -141,32 +141,32 @@ const Register = () => {
         e.preventDefault();
 
         const newErrors = {};
-        Object.keys(formData).forEach(key=>{
-            newErrors[key] = validateFields(key,formData[key])
-            }
+        Object.keys(formData).forEach(key => {
+            newErrors[key] = validateFields(key, formData[key])
+        }
         );
         setErrors(newErrors);
 
         const allTouched = {};
-        Object.keys(touched).forEach(key=>{
+        Object.keys(touched).forEach(key => {
             allTouched[key] = true;
         });
         setTouched(allTouched);
 
-        const FormisValid = Object.values(newErrors).every(error=>error==='');
+        const FormisValid = Object.values(newErrors).every(error => error === '');
         console.log("check")
-        if(FormisValid){
+        if (FormisValid) {
             console.log('Registration data:', {
                 fullName: formData.fullName,
                 email: formData.email,
                 address: formData.address,
                 phoneNumber: formData.phonenumber
-              });
+            });
         }
         resetForm();
     }
 
-    const resetForm = ()=>{
+    const resetForm = () => {
         setFormData({
             fullName: '',
             email: '',
@@ -202,35 +202,40 @@ const Register = () => {
                 <div className='register_form'>
                     <div className='form_group'>
                         <label className='form_label' htmlFor='name'>FullName</label>
-                        <input className={`form_input ${errors.fullName && touched.fullName ? 'input_error' : ''}`}  placeholder="Enter your full name" name="fullName" value={formData.fullName} onBlur={handleBlur} onChange={handleChange}/>
+                        <input className={`form_input ${errors.fullName && touched.fullName ? 'input_error' : ''}`} placeholder="Enter your full name" name="fullName" value={formData.fullName} onBlur={handleBlur} onChange={handleChange} />
                         {errors && touched.fullName && (<span className='error_message'>{errors.fullName}</span>)}
                     </div>
                     <div className='form_group'>
                         <label className='form_label' htmlFor='email'>Email</label>
-                        <input className={`form_input ${errors.email && touched.email ? 'input_error' : ''}`} placeholder="Enter your email" name="email" value={formData.email} onBlur={handleBlur} onChange={handleChange}/>
+                        <input className={`form_input ${errors.email && touched.email ? 'input_error' : ''}`} placeholder="Enter your email" name="email" value={formData.email} onBlur={handleBlur} onChange={handleChange} />
                         {errors && touched.email && (<span className='error_message'>{errors.email}</span>)}
                     </div>
                     <div className='form_group'>
                         <label className='form_label' htmlFor='password'>Password</label>
-                        <input type="password" className={`form_input ${errors.password && touched.password ? 'input_error' : ''}`} placeholder="Enter your password" name="password" value={formData.password} onBlur={handleBlur} onChange={handleChange}/>
+                        <input type="password" className={`form_input ${errors.password && touched.password ? 'input_error' : ''}`} placeholder="Enter your password" name="password" value={formData.password} onBlur={handleBlur} onChange={handleChange} />
                         {errors && touched.password && (<span className='error_message'>{errors.password}</span>)}
                     </div>
                     <div className='form_group'>
                         <label className='form_label' htmlFor='confirmpassword'>Confirm password</label>
-                        <input type="password"  className={`form_input ${errors.confirmpassword && touched.confirmpassword ? 'input_error' : ''}`} placeholder="Enter your confirm password" name="confirmpassword" value={formData.confirmpassword} onBlur={handleBlur} onChange={handleChange}/>
+                        <input type="password" className={`form_input ${errors.confirmpassword && touched.confirmpassword ? 'input_error' : ''}`} placeholder="Enter your confirm password" name="confirmpassword" value={formData.confirmpassword} onBlur={handleBlur} onChange={handleChange} />
                         {errors && touched.confirmpassword && (<span className='error_message'>{errors.confirmpassword}</span>)}
                     </div>
                     <div className='form_group'>
                         <label className='form_label' htmlFor='address'>Address</label>
-                        <textarea rows={3}  className={`form_input form-textarea ${errors.address && touched.address ? 'input_error' : ''}`} placeholder="Enter your address" name="address" value={formData.address} onBlur={handleBlur} onChange={handleChange}/>
+                        <textarea rows={3} className={`form_input form-textarea ${errors.address && touched.address ? 'input_error' : ''}`} placeholder="Enter your address" name="address" value={formData.address} onBlur={handleBlur} onChange={handleChange} />
                         {errors && touched.address && (<span className='error_message'>{errors.address}</span>)}
                     </div>
                     <div className='form_group'>
                         <label className='form_label' htmlFor='phonenumber'>Phone Number</label>
-                        <input className={`form_input ${errors.phonenumber && touched.phonenumber ? 'input_error' : ''}`} placeholder="Enter your phonenumber" name="phonenumber" value={formData.phonenumber} onBlur={handleBlur} onChange={handleChange}/>
+                        <input className={`form_input ${errors.phonenumber && touched.phonenumber ? 'input_error' : ''}`} placeholder="Enter your phonenumber" name="phonenumber" value={formData.phonenumber} onBlur={handleBlur} onChange={handleChange} />
                         {errors && touched.phonenumber && (<span className='error_message'>{errors.phonenumber}</span>)}
                     </div>
                     <button type="button" disabled={!isFormValid} className='register_btn' onClick={handleSubmit}>Submit</button>
+                    <div className="register_footer">
+                        <p className="footer_text">
+                            Already have an account? <a href="/login" className="login_link">Sign in</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

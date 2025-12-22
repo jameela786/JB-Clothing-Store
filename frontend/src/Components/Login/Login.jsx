@@ -1,9 +1,15 @@
 import React,{useState} from 'react'
+import { useAuth } from '../AuthContext/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import './Login.css'
 const Login = () => {
+    
+
     const [formData,setFormData] = useState({email:"",password:""});
     const [touched,setTouched] = useState({email:"",password:""});
     const [errors,setErrors] = useState({email:"",password:""});
+    const {setIsLoggedIn} = useAuth();
+    const navigate = useNavigate();
 
     const emailRegex = /^[^\s@]+\@[^\s@]+\.[^\s@]+$/;
 
@@ -71,6 +77,8 @@ const Login = () => {
 
         if(!emailErrors && !passwordErrors){
             console.log("can now submit data to api",formData)
+            setIsLoggedIn(true);
+            navigate('/landingpage');
         }
 
     }
@@ -82,14 +90,14 @@ const Login = () => {
             <div className='login_form'>
                 <div className='form_group'>
                     <label htmlFor='email' className='form_label'>Email</label>
-                    <input className='form_input' name="email" value={formData.email} onChange={handleOnChange} onBlur={handleOnBlur}/>
+                    <input className={`form_input ${errors.email && touched.email ? 'input_error' : '' }`} name="email" value={formData.email} onChange={handleOnChange} onBlur={handleOnBlur}/>
                     {errors.email && touched.email && (
                         <span className='error_message'>{errors.email}</span>
                     )}
                 </div>
                 <div className='form_group'>
                     <label className='form_label'>Password</label>
-                    <input className='form_input' name="password" value={formData.password} onChange={handleOnChange} onBlur={handleOnBlur}/>
+                    <input className={`form_input ${errors.password && touched.password ? 'input_error' : '' }`} name="password" value={formData.password} onChange={handleOnChange} onBlur={handleOnBlur}/>
                     {errors.password && touched.password && (
                         <span className='error_message'>{errors.password}</span>
                     )}

@@ -1,0 +1,119 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Helvetica Neue', sans-serif;
+  line-height: 1.6;
+  color: #282c3f;
+  background-color: #f5f5f6;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+  width: 100%;
+}
+
+/* Products Header */
+.products-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #282c3f;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: #7e818c;
+}
+
+/* .products-wrapper {
+  max-width: 1200px;   
+  margin: 0 auto;   
+  padding: 0 16px;    
+} */
+
+
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 280px)); 
+  gap: 20px;
+  margin-bottom: 48px;
+  justify-content: center; /* Center the grid */
+  max-width: 1200px; /* Constrain the grid itself */
+  margin-left: auto;
+  margin-right: auto;
+}
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #7e818c;
+}
+
+.empty-state h3 {
+  font-size: 24px;
+  color: #282c3f;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  font-size: 16px;
+}
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    .products-grid {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .main-content {
+      padding: 0 16px 32px;
+    }
+  
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr); /* Force 2 columns on mobile */
+      gap: 12px;
+    }
+  
+    .section-title {
+      font-size: 24px;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .products-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+  
