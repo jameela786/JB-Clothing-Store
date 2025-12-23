@@ -76,7 +76,43 @@ const loginUser = asyncHandler(async(req,res)=>{
     };
 });
 
+const logoutUser = asyncHandler(async (req, res) => {
+    // Clear cookie
+    res.cookie('token', '', {
+      expires: new Date(0),
+      httpOnly: true,
+    });
+  
+    res.status(200).json({
+      success: true,
+      message: 'Logged out successfully',
+    });
+  });
+const getMe = asyncHandler(async (req, res) => {
+    const user = req.user;
+        // const user = await User.findById(req.user._id).select('-password');
+        console.log("user in getMe=",user)
+        if (!user) {
+            return res.status(404);
+            throw new Error('User not Found');
+        }
+        
+        res.status(200).json({
+            success: true,
+            user: {
+                _id: user._id,
+                fullName: user.fullName,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                address: user.address,
+                role: user.role,
+            }
+        });
+
+  })
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser,
+    getMe,
   };

@@ -82,6 +82,14 @@
     gap: 4px;
 }
 
+.error_banner{
+    font-size: 13px;
+    color: #f56565;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .login_footer{
     margin-top: 24px;
     text-align: center;

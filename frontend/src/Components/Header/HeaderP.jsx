@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
+import { AuthContext} from '../AuthContext/AuthContext';
 import { Link, useNavigate,useSearchParams } from 'react-router-dom'
 import './HeaderP.css';
 
 // ==================== HEADER COMPONENT ====================
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const navigate = useNavigate();
   const [searchParams]  = useSearchParams();
   const [searchText,setSearchText] = useState(searchParams.get('search') || '')
+  const {isLoggedIn,logout,setIsLoggedIn,loading} = useContext(AuthContext);
+  if (loading) {
+    return null; // Or a skeleton header
+}
 
   // Add scroll effect to header
   useEffect(() => {
@@ -54,6 +60,18 @@ export const Header = () => {
     setSearchText(urlSearch);
   }, [searchParams]);
 
+    // Logout handler
+    const handleLogout = async() => {
+      try{
+        await logout();
+        // setIsLoggedIn(false)
+        setShowProfileDropdown(false);
+        navigate('/landingpage'); // Redirect to home
+      }catch(error){
+        console.log("Logout error",error)
+      }
+
+    };
 
   return (
     <header className={`header ${isScrolled ? 'header-scrolled' : ''}`}>
@@ -110,16 +128,113 @@ export const Header = () => {
         </div>
 
         {/* Auth Buttons */}
-        <div className="auth-buttons">
+        {/* <div className="auth-buttons">
           <Link to="/login">
             <button className="btn-login">Login</button>
           </Link>
           <Link to="/register">
             <button className="btn-signup">Sign Up</button>
           </Link>
+        </div> */}
 
+{isLoggedIn ? (
+          /* LOGGED IN STATE */
+          <div className="user-actions">
+            {/* Profile Dropdown */}
+            <div 
+              className="profile-wrapper"
+              onMouseEnter={() => setShowProfileDropdown(true)}
+              onMouseLeave={() => setShowProfileDropdown(false)}
+            >
+              <button className="action-button">
+                <svg className="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span className="action-label">Profile</span>
+              </button>
 
-        </div>
+              {/* Dropdown Menu */}
+              {showProfileDropdown && (
+                <div className="profile-dropdown">
+                  <Link to="/orders" className="dropdown-item">
+                    <span>📦</span> Orders
+                  </Link>
+                  <Link to="/addresses" className="dropdown-item">
+                    <span>📍</span> Saved Addresses
+                  </Link>
+                  <Link to="/profile/edit" className="dropdown-item">
+                    <span>✏️</span> Edit Profile
+                  </Link>
+                  <button onClick={handleLogout} className="dropdown-item logout-btn">
+                    <span>🚪</span> Logout
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Wishlist */}
+            <button className="action-button" onClick={() => navigate('/wishlist')}>
+              <svg className="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              <span className="action-label">Wishlist</span>
+            </button>
+
+            {/* Bag */}
+            <button className="action-button" onClick={() => navigate('/bag')}>
+              <svg className="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              <span className="action-label">Bag</span>
+            </button>
+          </div>
+        ) : (
+          /* LOGGED OUT STATE */
+          <div className="user-actions">
+            {/* Profile with Login/Signup */}
+            <div 
+              className="profile-container"
+              onMouseEnter={() => setShowProfileDropdown(true)}
+              onMouseLeave={() => setShowProfileDropdown(false)}
+            >
+              <button className="action-button">
+                <svg className="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span className="action-label">Profile</span>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showProfileDropdown && (
+                <div className="profile-dropdown">
+                  <Link to="/login" className="dropdown-item primary">
+                    <span>🔐</span> Login
+                  </Link>
+                  <Link to="/register" className="dropdown-item">
+                    <span>📝</span> Sign Up
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Wishlist */}
+            <button className="action-button" onClick={() => navigate('/wishlist')}>
+              <svg className="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              <span className="action-label">Wishlist</span>
+            </button>
+
+            {/* Bag */}
+            <button className="action-button" onClick={() => navigate('/bag')}>
+              <svg className="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              <span className="action-label">Bag</span>
+            </button>
+          </div>
+        )}
+
       </div>
     </header>
   );

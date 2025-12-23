@@ -11,11 +11,9 @@ import './LandingPageP.css'
 
 const LandingPage = () => {
   const { isLoggedIn } = useAuth();
-  const [searParams] = useSearchParams();
   const [searchParams] = useSearchParams();
   const selectedCategory = searchParams.get('category');
   const searchQuery = searchParams.get('search');
-  console.log("selectedcategory=",selectedCategory)
   const productsData = data[0].products;
   // State management
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,15 +53,15 @@ const LandingPage = () => {
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  console.log("indexOfFirstProduct, indexOfLastProduct", indexOfFirstProduct, indexOfLastProduct, productsData, [{ 1: 12 }, { 2: 13 }, { 3: 14 }, { 4: 15 }].slice(0, 3))
+  // console.log("indexOfFirstProduct, indexOfLastProduct", indexOfFirstProduct, indexOfLastProduct, productsData, [{ 1: 12 }, { 2: 13 }, { 3: 14 }, { 4: 15 }].slice(0, 3))
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-  console.log("currentProducts==", currentProducts)
+  // console.log("currentProducts==", currentProducts)
 
     // Reset to page 1 when category changes .WHY: Prevent showing empty pages in new category
   // ============================================
   useEffect(() => {
     setCurrentPage(1); // Reset pagination on category change
-  }, [selectedCategory]);
+  }, [selectedCategory,searchQuery]);
 
   // Handle page change
   const handlePageChange = (pageNumber) => {
@@ -75,11 +73,11 @@ const LandingPage = () => {
   };
 
   // Reset to page 1 if needed
-  useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(1);
-    }
-  }, [currentPage, totalPages]);
+  // useEffect(() => {
+  //   if (currentPage > totalPages) {
+  //     setCurrentPage(1);
+  //   }
+  // }, [currentPage, totalPages]);
 
   return (
     <div className="app">
@@ -100,9 +98,13 @@ const LandingPage = () => {
               ? `${selectedCategory}'s Fashion`
               : 'Trending Products'
             }</h2>
-          <p className="section-subtitle">
-            Showing {indexOfFirstProduct + 1} - {Math.min(indexOfLastProduct, filteredProducts.length)} of {filteredProducts.length} products
-          </p>
+            {
+              filteredProducts.length>0 && 
+              (<p className="section-subtitle">
+              Showing {indexOfFirstProduct + 1} - {Math.min(indexOfLastProduct, filteredProducts.length)} of {filteredProducts.length} products
+              </p>)
+            }
+
         </div>
 
         {/* Product Grid */}

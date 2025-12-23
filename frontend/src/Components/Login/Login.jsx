@@ -1,6 +1,6 @@
-import React,{useState} from 'react'
-import { useAuth } from '../AuthContext/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import React,{useState,useContext} from 'react'
+import { useAuth ,AuthContext} from '../AuthContext/AuthContext';
+import { useNavigate ,useSearchParams} from 'react-router-dom';
 import './Login.css'
 const Login = () => {
     
@@ -8,8 +8,11 @@ const Login = () => {
     const [formData,setFormData] = useState({email:"",password:""});
     const [touched,setTouched] = useState({email:"",password:""});
     const [errors,setErrors] = useState({email:"",password:""});
+    const [loading, setLoading] = useState(false);
+    const {login,error,setError} = useContext(AuthContext);
     const {setIsLoggedIn} = useAuth();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const emailRegex = /^[^\s@]+\@[^\s@]+\.[^\s@]+$/;
 
@@ -60,8 +63,10 @@ const Login = () => {
         }));
     };
 
-    const handleSubmit=(e)=>{
+    const handleSubmit=async(e)=>{
         e.preventDefault();
+        setError(null);
+    setLoading(true);
         const emailErrors = validateField('email',formData.email);
         const passwordErrors = validateField('password',formData.password);
 
@@ -77,8 +82,21 @@ const Login = () => {
 
         if(!emailErrors && !passwordErrors){
             console.log("can now submit data to api",formData)
-            setIsLoggedIn(true);
-            navigate('/landingpage');
+
+            
+            try {
+                await login(formData.email, formData.password);
+                setIsLoggedIn(true);
+                const redirect = searchParams.get('redirect');
+                navigate(redirect || '/landingpage');
+              } catch (err) {
+                console.error('Login error:', err);
+                // setIsLoggedIn(false);
+              } finally {
+                setLoading(false);
+              }
+        }else{
+            setLoading(false);
         }
 
     }
@@ -88,21 +106,28 @@ const Login = () => {
         <div className='login_card'>
             <h1 className='login_title'>WELCOME</h1>
             <div className='login_form'>
+                {
+                    error && (
+                        <div className='error_banner' role="alert">
+                            {error}
+                        </div>
+                    )
+                }
                 <div className='form_group'>
                     <label htmlFor='email' className='form_label'>Email</label>
-                    <input className={`form_input ${errors.email && touched.email ? 'input_error' : '' }`} name="email" value={formData.email} onChange={handleOnChange} onBlur={handleOnBlur}/>
+                    <input id="email" className={`form_input ${errors.email && touched.email ? 'input_error' : '' }`} name="email" value={formData.email} onChange={handleOnChange} onBlur={handleOnBlur}/>
                     {errors.email && touched.email && (
                         <span className='error_message'>{errors.email}</span>
                     )}
                 </div>
                 <div className='form_group'>
-                    <label className='form_label'>Password</label>
-                    <input className={`form_input ${errors.password && touched.password ? 'input_error' : '' }`} name="password" value={formData.password} onChange={handleOnChange} onBlur={handleOnBlur}/>
+                    <label className='form_label' htmlFor='password'>Password</label>
+                    <input id="password" type="password" className={`form_input ${errors.password && touched.password ? 'input_error' : '' }`} name="password" value={formData.password} onChange={handleOnChange} onBlur={handleOnBlur}/>
                     {errors.password && touched.password && (
                         <span className='error_message'>{errors.password}</span>
                     )}
                 </div>
-                <button className='submit_btn' onClick={handleSubmit}>Login</button>
+                <button type="submit" className='submit_btn' onClick={handleSubmit} disabled={loading}>{loading ? 'Loading...' : 'Login'}</button>
                 <p className='login_footer'>Don't have an account? <a href="/register" className='signup_link'>Sign up</a> </p>
             </div>
         </div>

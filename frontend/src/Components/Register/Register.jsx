@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useFormAction } from 'react-router-dom';
+import React, { useEffect, useState,useContext } from 'react'
+import { useNavigate,useFormAction } from 'react-router-dom';
+import { AuthContext} from '../AuthContext/AuthContext';
 import './Register.css'
 
 const Register = () => {
@@ -27,6 +28,9 @@ const Register = () => {
         address: false,
         phonenumber: false
     });
+    const [loading, setLoading] = useState(false);
+    const { register, error, setError } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [isFormValid, setIsFormValid] = useState(false)
 
@@ -50,7 +54,7 @@ const Register = () => {
                 if (!value.trim()) {
                     return 'Email is required'
                 }
-                if (emailRegex.test(value)) {
+                if (!emailRegex.test(value)) {
                     return 'Enter valid email'
                 }
                 return ''
@@ -82,7 +86,7 @@ const Register = () => {
                 if (!value.trim()) {
                     return 'PhoneNumber is required'
                 }
-                if (phoneRegex.test(value)) {
+                if (!phoneRegex.test(value)) {
                     return 'Enter valid Phone number'
                 }
                 if (value.length < 10) {
@@ -137,9 +141,9 @@ const Register = () => {
 
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-
+        setError(null);
         const newErrors = {};
         Object.keys(formData).forEach(key => {
             newErrors[key] = validateFields(key, formData[key])
@@ -156,12 +160,21 @@ const Register = () => {
         const FormisValid = Object.values(newErrors).every(error => error === '');
         console.log("check")
         if (FormisValid) {
-            console.log('Registration data:', {
-                fullName: formData.fullName,
-                email: formData.email,
-                address: formData.address,
-                phoneNumber: formData.phonenumber
-            });
+            // console.log('Registration data:', {
+            //     fullName: formData.fullName,
+            //     email: formData.email,
+            //     address: formData.address,
+            //     phoneNumber: formData.phonenumber
+            // });
+            setLoading(true);
+            try {
+              await register(formData.fullName, formData.email, formData.password, formData.phonenumber,formData.address);
+              navigate('/login');
+            } catch (err) {
+              console.error('Register error:', err);
+            } finally {
+              setLoading(false);
+            }
         }
         resetForm();
     }
